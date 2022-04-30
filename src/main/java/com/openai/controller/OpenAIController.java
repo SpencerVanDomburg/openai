@@ -27,7 +27,7 @@ public class OpenAIController {
     @CrossOrigin(origins = "*")
     @PostMapping("/v1/answers")
     public ResponseEntity<Object> getAnswer(
-            @RequestBody QuestionForm questionForm
+//            @RequestBody QuestionForm questionForm
     ) throws JsonProcessingException {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders header = new HttpHeaders();
@@ -36,14 +36,14 @@ public class OpenAIController {
         Map<String, String> bodyParamMap = new HashMap<String, String>();
 
         //Set your request body params
-        bodyParamMap.put("documents", questionForm.getDocuments().toString());
-        bodyParamMap.put("question", questionForm.getQuestion());
-        bodyParamMap.put("search_model", questionForm.getSearchModel());
-        bodyParamMap.put("model", questionForm.getModel());
-        bodyParamMap.put("examples_context", questionForm.getExampleContext());
-        bodyParamMap.put("examples", questionForm.getExamples().toString());
-        bodyParamMap.put("max_tokens", String.valueOf(questionForm.getMaxTokens()));
-        bodyParamMap.put("stop", questionForm.getStop().toString());
+//        bodyParamMap.put("documents", questionForm.getDocuments().toString());
+//        bodyParamMap.put("question", questionForm.getQuestion());
+//        bodyParamMap.put("search_model", questionForm.getSearchModel());
+//        bodyParamMap.put("model", questionForm.getModel());
+//        bodyParamMap.put("examples_context", questionForm.getExampleContext());
+//        bodyParamMap.put("examples", questionForm.getExamples().toString());
+//        bodyParamMap.put("max_tokens", String.valueOf(questionForm.getMaxTokens()));
+//        bodyParamMap.put("stop", questionForm.getStop().toString());
 
         String reqBodyData = new ObjectMapper().writeValueAsString(bodyParamMap);
         String reqBodyData2 = "{\n" +
