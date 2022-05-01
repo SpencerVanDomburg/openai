@@ -10,15 +10,19 @@ import java.util.ArrayList;
 @Setter
 public class QuestionForm {
 
+    @JsonProperty("documents")
     private ArrayList<String> documents;
 
+    @JsonProperty("question")
     private String question;
 
     @JsonProperty("search_model")
     private String searchModel;
 
+    @JsonProperty("model")
     private String model;
 
+    @JsonProperty("examples")
     private ArrayList<ArrayList<String>> examples;
 
     @JsonProperty("examples_context")
@@ -27,5 +31,6 @@ public class QuestionForm {
     @JsonProperty("max_tokens")
     private int maxTokens;
 
+    @JsonProperty("stop")
     private ArrayList<String> stop;
 }
