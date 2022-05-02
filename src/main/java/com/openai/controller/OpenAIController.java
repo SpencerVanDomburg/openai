@@ -7,18 +7,17 @@ import com.openai.domain.QuestionForm;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 public class OpenAIController {
@@ -62,6 +61,20 @@ public class OpenAIController {
 
         Object response
                 = restTemplate.postForEntity(OPEN_AI_URL + "/v1/engines/" + engine + "/completions", requestEnty, Object.class);
+        return new ResponseEntity<Object>(response, HttpStatus.OK);
+    }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping("/v1/engines")
+    public ResponseEntity<Object> getEngines(){
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders header = new HttpHeaders();
+        header.setBearerAuth(apiKey);
+
+        HttpEntity<String> requestEnty = new HttpEntity<>(header);
+
+        Object response
+                = restTemplate.exchange(OPEN_AI_URL + "/v1/engines", HttpMethod.GET, requestEnty, Object.class);
         return new ResponseEntity<Object>(response, HttpStatus.OK);
     }
 
