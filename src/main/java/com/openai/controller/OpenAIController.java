@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.openai.domain.CompletionForm;
 import com.openai.domain.QuestionForm;
+import com.openai.domain.SearchForm;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -61,6 +62,25 @@ public class OpenAIController {
 
         Object response
                 = restTemplate.postForEntity(OPEN_AI_URL + "/v1/engines/" + engine + "/completions", requestEnty, Object.class);
+        return new ResponseEntity<Object>(response, HttpStatus.OK);
+    }
+
+    @CrossOrigin(origins = "*")
+    @PostMapping("/v1/engines/{engine}/search")
+    public ResponseEntity<Object> performSearch(
+            @PathVariable("engine") String engine,
+            @RequestBody SearchForm searchForm
+    ) throws JsonProcessingException {
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders header = new HttpHeaders();
+        header.setContentType(MediaType.APPLICATION_JSON);
+        header.setBearerAuth(apiKey);
+        String reqBodyData = new ObjectMapper().writeValueAsString(searchForm);
+
+        HttpEntity<String> requestEnty = new HttpEntity<>(reqBodyData, header);
+
+        Object response
+                = restTemplate.postForEntity(OPEN_AI_URL + "/v1/engines/" + engine + "/search", requestEnty, Object.class);
         return new ResponseEntity<Object>(response, HttpStatus.OK);
     }
 
