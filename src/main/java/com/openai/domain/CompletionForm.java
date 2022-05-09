@@ -14,7 +14,7 @@ public class CompletionForm {
     private double temperature;
 
     @JsonProperty("top_p")
-    private int topP;
+    private double topP;
 
     @JsonProperty("n")
     private int n;
