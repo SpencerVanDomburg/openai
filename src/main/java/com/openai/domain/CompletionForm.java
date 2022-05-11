@@ -23,7 +23,7 @@ public class CompletionForm {
     private boolean stream;
 
     @JsonProperty("logprobs")
-    private String logProbs;
+    private Integer logProbs;
 
     @JsonProperty("stop")
     private String stop;

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.openai.domain.ClassificationForm;
 import com.openai.domain.CompletionForm;
+import com.openai.domain.EditForm;
 import com.openai.domain.QuestionForm;
 import com.openai.domain.SearchForm;
 import org.springframework.beans.factory.annotation.Value;
@@ -40,10 +41,10 @@ public class OpenAIController {
         header.setBearerAuth(apiKey);
         String reqBodyData = new ObjectMapper().writeValueAsString(questionForm);
 
-        HttpEntity<String> requestEnty = new HttpEntity<>(reqBodyData, header);
+        HttpEntity<String> requestEntity = new HttpEntity<>(reqBodyData, header);
 
         Object response
-                = restTemplate.postForEntity(OPEN_AI_URL + "/v1/answers", requestEnty, Object.class);
+                = restTemplate.postForEntity(OPEN_AI_URL + "/v1/answers", requestEntity, Object.class);
         return new ResponseEntity<Object>(response, HttpStatus.OK);
     }
 
@@ -59,10 +60,10 @@ public class OpenAIController {
         header.setBearerAuth(apiKey);
         String reqBodyData = new ObjectMapper().writeValueAsString(completionForm);
 
-        HttpEntity<String> requestEnty = new HttpEntity<>(reqBodyData, header);
+        HttpEntity<String> requestEntity = new HttpEntity<>(reqBodyData, header);
 
         Object response
-                = restTemplate.postForEntity(OPEN_AI_URL + "/v1/engines/" + engine + "/completions", requestEnty, Object.class);
+                = restTemplate.postForEntity(OPEN_AI_URL + "/v1/engines/" + engine + "/completions", requestEntity, Object.class);
         return new ResponseEntity<Object>(response, HttpStatus.OK);
     }
 
@@ -78,16 +79,16 @@ public class OpenAIController {
         header.setBearerAuth(apiKey);
         String reqBodyData = new ObjectMapper().writeValueAsString(searchForm);
 
-        HttpEntity<String> requestEnty = new HttpEntity<>(reqBodyData, header);
+        HttpEntity<String> requestEntity = new HttpEntity<>(reqBodyData, header);
 
         Object response
-                = restTemplate.postForEntity(OPEN_AI_URL + "/v1/engines/" + engine + "/search", requestEnty, Object.class);
+                = restTemplate.postForEntity(OPEN_AI_URL + "/v1/engines/" + engine + "/search", requestEntity, Object.class);
         return new ResponseEntity<Object>(response, HttpStatus.OK);
     }
 
     @CrossOrigin(origins = "*")
     @PostMapping("/v1/classifications")
-    public ResponseEntity<Object> performSearch(
+    public ResponseEntity<Object> createClassification(
             @RequestBody ClassificationForm classificationForm
     ) throws JsonProcessingException {
         RestTemplate restTemplate = new RestTemplate();
@@ -96,24 +97,43 @@ public class OpenAIController {
         header.setBearerAuth(apiKey);
         String reqBodyData = new ObjectMapper().writeValueAsString(classificationForm);
 
-        HttpEntity<String> requestEnty = new HttpEntity<>(reqBodyData, header);
+        HttpEntity<String> requestEntity = new HttpEntity<>(reqBodyData, header);
 
         Object response
-                = restTemplate.postForEntity(OPEN_AI_URL + "/v1/classifications", requestEnty, Object.class);
+                = restTemplate.postForEntity(OPEN_AI_URL + "/v1/classifications", requestEntity, Object.class);
+        return new ResponseEntity<Object>(response, HttpStatus.OK);
+    }
+
+    @CrossOrigin(origins = "*")
+    @PostMapping("/v1/engines/{engine}/edits")
+    public ResponseEntity<Object> createEdit(
+            @PathVariable("engine") String engine,
+            @RequestBody EditForm editForm
+    ) throws JsonProcessingException {
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders header = new HttpHeaders();
+        header.setContentType(MediaType.APPLICATION_JSON);
+        header.setBearerAuth(apiKey);
+        String reqBodyData = new ObjectMapper().writeValueAsString(editForm);
+
+        HttpEntity<String> requestEntity = new HttpEntity<>(reqBodyData, header);
+
+        Object response
+                = restTemplate.postForEntity(OPEN_AI_URL + "/v1/engines/" + engine + "/edits", requestEntity, Object.class);
         return new ResponseEntity<Object>(response, HttpStatus.OK);
     }
 
     @CrossOrigin(origins = "*")
     @GetMapping("/v1/engines")
-    public ResponseEntity<Object> getEngines(){
+    public ResponseEntity<Object> getEngines() {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders header = new HttpHeaders();
         header.setBearerAuth(apiKey);
 
-        HttpEntity<String> requestEnty = new HttpEntity<>(header);
+        HttpEntity<String> requestEntity = new HttpEntity<>(header);
 
         Object response
-                = restTemplate.exchange(OPEN_AI_URL + "/v1/engines", HttpMethod.GET, requestEnty, Object.class);
+                = restTemplate.exchange(OPEN_AI_URL + "/v1/engines", HttpMethod.GET, requestEntity, Object.class);
         return new ResponseEntity<Object>(response, HttpStatus.OK);
     }
 
