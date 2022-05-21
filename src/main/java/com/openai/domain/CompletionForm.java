@@ -25,6 +25,9 @@ public class CompletionForm {
     @JsonProperty("logprobs")
     private Integer logProbs;
 
+    @JsonProperty("echo")
+    private boolean echo;
+
     @JsonProperty("stop")
     private String stop;
 
