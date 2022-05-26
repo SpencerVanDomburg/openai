@@ -12,7 +12,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(RestClientException.class)
     public final ResponseEntity<Object> handleRestClientException(Exception ex) {
-        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
-        return new ResponseEntity<Object>(ex.getLocalizedMessage(), status);
+        return new ResponseEntity<Object>(ex.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
     }
 }
